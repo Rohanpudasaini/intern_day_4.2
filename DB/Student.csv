@@ -1,0 +1,10 @@
+first_name,last_name,roll_number,enrolled_course,total_course_cost,total_paid
+Rohan,Pudasaini,11,"Advance Python,Expert Java Programming,React Essentials",0,10000.0
+Ganesh,Kunwar,12,"Advance Python,Advanced JavaScript,Android App Development",55600,7600
+Kaushal,Gautam,13,"Flutter Development,Java for Intermediate Learners,Mobile App Development with React Native",5400,5400
+Rakesh,Joshi,15,"Intermediate python,Flutter Development",3500,2000.0
+Sabin,Maharjan,16,"Intermediate python,Testing2",3234,2000.0
+Testing,User,17,",Basic Python,Intermediate python",3000,5000.0
+Rakesh,Roshan,19,",Basic Python,Basic Python",2000,2000.0
+Ganesh,Kunwar,20,,0,0.0
+Testing,123,21,,1000,0.0
