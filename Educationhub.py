@@ -18,25 +18,25 @@ def show_student_rows(db_handler):
     choice = show_student_menu()
     match choice:
         case "1":
-            Student.add_student(Student,student)
+            Student.add_student(student)
 
         case "2":
-            Student.remove_student(Student,db_handler)
+            Student.remove_student(db_handler)
 
         case "3":
-            Student.show_remaining_fee(Student,db_handler)
+            Student.show_remaining_fee(db_handler)
 
         case "4":
-            Student.pay_fee(Student,db_handler)
+            Student.pay_fee(db_handler)
             
         case "5":
-            Student.join_course(Student,db_handler)
+            Student.join_course(db_handler)
 
         case "6":
-            Student.opt_course(Student,db_handler)
+            Student.opt_course(db_handler)
 
         case "7":
-            Student.change_session(Student,db_handler)
+            Student.change_session(db_handler)
         
         case "8":
             show_main_menu()

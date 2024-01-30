@@ -122,8 +122,8 @@ class Student:
         """
         return db_handler.write_student(student)
 
-    
-    def add_student(self,student:dict):
+    @classmethod
+    def add_student(cls,student:dict):
         """
         Adds a new student to the database.
 
@@ -139,10 +139,10 @@ class Student:
             lastname = ""
         rollno = input(f"Enter unique rollnumber,(currentlast rollnumber is {last_roll_number}): ")
         current_paid = (input("Enter the current price paid: "))
-        self(firstname, lastname,rollno,float(current_paid))
+        cls(firstname, lastname,rollno,float(current_paid))
     
-    
-    def remove_student(self,db_handler):
+    @classmethod
+    def remove_student(cls,db_handler):
         """
         Removes a student from the database based on their roll number.
 
@@ -150,25 +150,26 @@ class Student:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
         roll_num_to_remove = int(input("Enter the roll number to remove: "))
-        student = self.get_student(db_handler)
+        student = cls.get_student(db_handler)
         if roll_num_to_remove in student:
             student.pop(int(roll_num_to_remove))
-            self.write_student(db_handler,student)
+            cls.write_student(db_handler,student)
         else:
             print_colored_message(f"No student with roll number {roll_num_to_remove}", Colors.RED)
         input("\n\nPress anykey to continue...")
 
-    def show_remaining_fee(self,db_handler):
+    @classmethod
+    def show_remaining_fee(cls,db_handler):
         """
         Displays the remaining fee for a specific student.
 
         Args:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
-        student = self.get_student(db_handler)
+        student = cls.get_student(db_handler)
         roll_num_to_fee = int(input("Enter the roll number to get remaning fee "))
         if roll_num_to_fee in student:
-            fee = self.get_remaining_payment(Student,roll_num_to_fee)
+            fee = cls.get_remaining_payment(Student,roll_num_to_fee)
             if fee < 0:
                 fee = str(fee *-1) + " Overpaid"
             else:
@@ -178,23 +179,24 @@ class Student:
             print_colored_message(f"No student with roll number {roll_num_to_fee}",Colors.RED)
         input("\n\nPress anykey to continue...")
     
-    def pay_fee(self,db_handler):
+    @classmethod
+    def pay_fee(cls,db_handler):
         """
         Processes the fee payment for a specific student.
 
         Args:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
-        student = self.get_student(db_handler)
+        student = cls.get_student(db_handler)
         roll_num_to_pay = int(input("Enter the roll number to get pay fee: "))
         if roll_num_to_pay in student:
             remaining_fee = 'remaning'
             cash_status = "paying"
-            fee = self.get_remaining_payment(self,roll_num_to_pay)
-            if self.get_remaining_payment(self,roll_num_to_pay) < 0:
+            fee = cls.get_remaining_payment(cls,roll_num_to_pay)
+            if cls.get_remaining_payment(cls,roll_num_to_pay) < 0:
                 remaining_fee = "overpaid"
                 cash_status = "refunding"
-                fee = self.get_remaining_payment(self,roll_num_to_pay) * -1
+                fee = cls.get_remaining_payment(cls,roll_num_to_pay) * -1
                 refund = True
 
             print(f"The student have {fee} fee {remaining_fee}, {cash_status} the fee now.")
@@ -203,12 +205,12 @@ class Student:
                 student[int(roll_num_to_pay)]["Paid"] = float(student[int(roll_num_to_pay)]["Paid"]) + fee
             else:
                 student[int(roll_num_to_pay)]["Paid"] = 0.0
-            self.write_student(db_handler,student)
+            cls.write_student(db_handler,student)
         else:
             print_colored_message(f"No student with roll number {roll_num_to_pay}",Colors.RED)
         input("\n\nEnter anykey to continue....")
-
-    def join_course(self, db_handler):
+    @classmethod
+    def join_course(cls, db_handler):
         """
         Enrolls a student in a new course.
 
@@ -220,20 +222,20 @@ class Student:
         _, all_course_list = Academy.get_course(db_handler)
         course_name_to_add = input("Enter the name of the course you want to add:  ").strip()
         if course_name_to_add in all_course_list:
-            student = self.get_student(db_handler)
+            student = cls.get_student(db_handler)
             # print(all_course_list)
             if course_name_to_add not in student[roll_number_to_join]["Enrolled_list"]:
                 student[roll_number_to_join]["Enrolled_list"].append(course_name_to_add)
-                self.write_student(db_handler,student)
+                cls.write_student(db_handler,student)
             # s1 = Student()
-                self.update_total_price(self, roll_number_to_join)
+                cls.update_total_price(cls, roll_number_to_join)
             else:
                 print_colored_message(f"The User with roll number {roll_number_to_join} is already enrolled into {course_name_to_add} course",Colors.RED)
         else:
             print_colored_message("No Such Course Name", Colors.RED)
         input("\n Press any key to continue")
-    
-    def opt_course(self,db_handler):
+    @classmethod
+    def opt_course(cls,db_handler):
         """
         Opts a student out of a course.
 
@@ -242,17 +244,17 @@ class Student:
         """
         roll_number_to_opt = int(input("Enter the roll number to get Opt from a course: "))
         # show_all_course()
-        student = self.get_student(db_handler)
+        student = cls.get_student(db_handler)
         course_name_to_remove = input("Enter the name of the course you want to remove:  ")
         if course_name_to_remove in student[roll_number_to_opt]["Enrolled_list"]:
             student[roll_number_to_opt]["Enrolled_list"].remove(course_name_to_remove)
-            self.write_student(db_handler,student)
-            self.update_total_price(self,int(roll_number_to_opt))
+            cls.write_student(db_handler,student)
+            cls.update_total_price(cls,int(roll_number_to_opt))
         else:
             print_colored_message("No Such Course Name", Colors.RED)
             input()
-    
-    def change_session(self,db_handler):
+    @classmethod
+    def change_session(cls,db_handler):
         """
         Changes the session for all students, checking their fee status.
 
