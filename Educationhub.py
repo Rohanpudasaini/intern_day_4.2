@@ -19,29 +19,36 @@ def show_student_rows(db_handler):
     match choice:
         case "1":
             Student.add_student(student)
+            show_student_rows(db_handler)
 
         case "2":
             Student.remove_student(db_handler)
+            show_student_rows(db_handler)
 
         case "3":
             Student.show_remaining_fee(db_handler)
+            show_student_rows(db_handler)
 
         case "4":
             Student.pay_fee(db_handler)
+            show_student_rows(db_handler)
             
         case "5":
             Student.join_course(db_handler)
+            show_student_rows(db_handler)
 
         case "6":
             Student.opt_course(db_handler)
+            show_student_rows(db_handler)
 
         case "7":
             Student.change_session(db_handler)
+            show_student_rows(db_handler)
         
         case "8":
             show_main_menu()
         case _:
-            show_student_rows()
+            show_student_rows(db_handler)
 
 def show_university(db_handler):
     os.system("clear")
@@ -79,7 +86,7 @@ def main():
             Academy.show_all_course(db_handler)
         elif choice == '4':
             print("Exiting the app...")
-            break
+            exit()
         else:
             print("Invalid choice. Please try again.")
 

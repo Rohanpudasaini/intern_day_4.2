@@ -131,7 +131,7 @@ class Student:
             student (dict): A dictionary containing the new student's data.
         """
         last_roll_number = list(student.keys())[-1]
-        full_name = input("Enter Students full name i.e name and surname only: ").split(" ",1)
+        full_name = input("\n\nEnter Students full name i.e name and surname only: ").split(" ",1)
         if len(full_name) ==2:
             firstname, lastname = full_name
         else:
@@ -139,7 +139,18 @@ class Student:
             lastname = ""
         rollno = input(f"Enter unique rollnumber,(currentlast rollnumber is {last_roll_number}): ")
         current_paid = (input("Enter the current price paid: "))
-        cls(firstname, lastname,rollno,float(current_paid))
+        if int(rollno)  in student:
+            print_colored_message(f"The User with Roll NO {rollno} already exsist. Do you want to edit the user? (y/n):", Colors.RED)
+            edit = input()
+            if edit.lower() == "y":
+                cls(firstname, lastname,rollno,float(current_paid))
+            else:
+                print_colored_message('''Redirecting back to the Student page......''', Colors.YELLOW)
+                 
+                cls.add_student(student)  
+        else:
+            cls(firstname, lastname,rollno,float(current_paid))
+        
     
     @classmethod
     def remove_student(cls,db_handler):
@@ -167,7 +178,7 @@ class Student:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
         student = cls.get_student(db_handler)
-        roll_num_to_fee = int(input("Enter the roll number to get remaning fee "))
+        roll_num_to_fee = int(input("Enter the roll number to get remaning fee: "))
         if roll_num_to_fee in student:
             fee = cls.get_remaining_payment(Student,roll_num_to_fee)
             if fee < 0:
@@ -193,6 +204,7 @@ class Student:
             remaining_fee = 'remaning'
             cash_status = "paying"
             fee = cls.get_remaining_payment(cls,roll_num_to_pay)
+            refund = False
             if cls.get_remaining_payment(cls,roll_num_to_pay) < 0:
                 remaining_fee = "overpaid"
                 cash_status = "refunding"
@@ -205,6 +217,10 @@ class Student:
                 student[int(roll_num_to_pay)]["Paid"] = float(student[int(roll_num_to_pay)]["Paid"]) + fee
             else:
                 student[int(roll_num_to_pay)]["Paid"] = 0.0
+                # refunded = float(student[int(roll_num_to_pay)]['Total_cost'])
+                
+                # student[int(roll_num_to_pay)]['Total_cost'] = refunded *0.8
+
             cls.write_student(db_handler,student)
         else:
             print_colored_message(f"No student with roll number {roll_num_to_pay}",Colors.RED)
@@ -248,6 +264,11 @@ class Student:
         course_name_to_remove = input("Enter the name of the course you want to remove:  ")
         if course_name_to_remove in student[roll_number_to_opt]["Enrolled_list"]:
             student[roll_number_to_opt]["Enrolled_list"].remove(course_name_to_remove)
+            refunded = float(student[int(roll_number_to_opt)]['Total_cost'])
+            paid_total = float(student[int(roll_number_to_opt)]['Paid'])
+            student[int(roll_number_to_opt)]['Paid'] = paid_total - (refunded *0.2)
+            # print(student)
+            # input() 
             cls.write_student(db_handler,student)
             cls.update_total_price(cls,int(roll_number_to_opt))
         else:

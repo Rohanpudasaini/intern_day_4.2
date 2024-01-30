@@ -57,6 +57,7 @@ class DatabaseHandler:
                 first_name, last_name, roll_number, enrolled, total_cost, paid = rows
                 roll_number = int(roll_number)
                 enrolled_list = enrolled.split(",")
+                
                 student[roll_number] = {"first_name": first_name.strip(), "last_name": last_name.strip(),
                                     "Total_cost": total_cost.strip(), "Enrolled_list": enrolled_list, "Paid": paid.strip()}
         return student
