@@ -5,6 +5,18 @@ import os
 
 class Student:
     def __init__(self, first_name, last_name, roll_number, paid, enrolled=None, total_cost=0, db_handler= DatabaseHandler("/home/r0h8n/Desktop/Vanilla/Day4.1/DB")):
+        """
+        Initializes a new Student object with the given parameters.
+
+        Args:
+            first_name (str): The first name of the student.
+            last_name (str): The last name of the student.
+            roll_number (int): The roll number of the student.
+            paid (float): The amount already paid by the student.
+            enrolled (list, optional): List of courses the student is enrolled in. Defaults to an empty list.
+            total_cost (float, optional): The total cost for the student. Defaults to 0.
+            db_handler (DatabaseHandler, optional): A DatabaseHandler object to interact with the database.
+        """
         self.db_handler = db_handler
         self.first_name = first_name
         self.last_name = last_name
@@ -15,7 +27,6 @@ class Student:
         self.roll_number = int(self.roll_number)
 
         self.student_data = self.db_handler.get_student()
-        # print(self.student_data)
         if self.roll_number not in self.student_data:
             self.student_data[self.roll_number] = {
                 "first_name": self.first_name,
@@ -32,18 +43,27 @@ class Student:
                 "Enrolled_list": self.student_data[self.roll_number]["Enrolled_list"],
                 "Paid": self.paid
             }
-        # print(self.student_data)
-        # input("Testing")
+
         self.db_handler.write_student(self.student_data)
 
     def make_payment(self, pay):
-        # self.start_db_handeling(self)
+        """
+        Processes a payment made by the student.
+
+        Args:
+            pay (float): The amount to be paid by the student.
+        """
         self.student_data = self.db_handler.get_student()
         self.student_data[self.roll_number]["Paid"] = str(float(self.student_data[self.roll_number]["Paid"]) + pay)
         self.db_handler.write_student(self.student_data)
 
     def update_total_price(self, id):
-        # self.start_db_handeling(self)
+        """
+        Updates the total cost of courses for the student.
+
+        Args:
+            id (int): The roll number of the student.
+        """
         self.student_data = self.db_handler.get_student()
         _, all_course_list = self.db_handler.get_course()
         total_cost = 0
@@ -55,33 +75,61 @@ class Student:
         self.db_handler.write_student(self.student_data)
 
     def get_remaining_payment(self, id):
-        # self.start_db_handeling(self)
+        """
+        Retrieves the remaining payment amount for the student.
+
+        Args:
+            id (int): The roll number of the student.
+
+        Returns:
+            float: The remaining amount to be paid by the student.
+        """
         self.student_data = DatabaseHandler.get_student(DatabaseHandler)
         student = self.student_data.get(id, "Can't find the id in our Database")
         if isinstance(student, str):
             return student
         remaining = float(student["Total_cost"]) - float(student["Paid"])
         return remaining
-    # def remaining_payment(self, id) ->float:
-    #     self.student = self.db_handler.get_student()
-    #     self.student = self.student.get(id, "Can't find the id in our Database")
-    #     remaning = float(self.student["Total_cost"])- float(self.student["Paid"])
-    #     return remaning
 
     def start_db_handeling(self):
+        """
+        Initializes database handling for the student.
+        """
         self.db_handler = DatabaseHandler()
         
     
     @staticmethod
     def get_student(db_handler):
+        """
+        Retrieves student data from the database.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object.
+
+        Returns:
+            dict: A dictionary containing student data.
+        """
         return db_handler.get_student()
     
     @staticmethod
     def write_student(db_handler, student):
+        """
+        Writes student data to the database.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object.
+            student (dict): A dictionary containing the student's data.
+        """
         return db_handler.write_student(student)
 
     
     def add_student(self,student:dict):
+        """
+        Adds a new student to the database.
+
+        Args:
+            student (dict): A dictionary containing the new student's data.
+        """
         last_roll_number = list(student.keys())[-1]
         full_name = input("Enter Students full name i.e name and surname only: ").split(" ",1)
         if len(full_name) ==2:
@@ -95,6 +143,12 @@ class Student:
     
     
     def remove_student(self,db_handler):
+        """
+        Removes a student from the database based on their roll number.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object.
+        """
         roll_num_to_remove = int(input("Enter the roll number to remove: "))
         student = self.get_student(db_handler)
         if roll_num_to_remove in student:
@@ -105,6 +159,12 @@ class Student:
         input("\n\nPress anykey to continue...")
 
     def show_remaining_fee(self,db_handler):
+        """
+        Displays the remaining fee for a specific student.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object.
+        """
         student = self.get_student(db_handler)
         roll_num_to_fee = int(input("Enter the roll number to get remaning fee "))
         if roll_num_to_fee in student:
@@ -119,6 +179,12 @@ class Student:
         input("\n\nPress anykey to continue...")
     
     def pay_fee(self,db_handler):
+        """
+        Processes the fee payment for a specific student.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object.
+        """
         student = self.get_student(db_handler)
         roll_num_to_pay = int(input("Enter the roll number to get pay fee: "))
         if roll_num_to_pay in student:
@@ -143,6 +209,12 @@ class Student:
         input("\n\nEnter anykey to continue....")
 
     def join_course(self, db_handler):
+        """
+        Enrolls a student in a new course.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object.
+        """
         roll_number_to_join = int(input("Enter the roll number to get Join a course: "))
         Academy.show_all_course(db_handler)
         _, all_course_list = Academy.get_course(db_handler)
@@ -162,6 +234,12 @@ class Student:
         input("\n Press any key to continue")
     
     def opt_course(self,db_handler):
+        """
+        Opts a student out of a course.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object.
+        """
         roll_number_to_opt = int(input("Enter the roll number to get Opt from a course: "))
         # show_all_course()
         student = self.get_student(db_handler)
@@ -175,6 +253,12 @@ class Student:
             input()
     
     def change_session(self,db_handler):
+        """
+        Changes the session for all students, checking their fee status.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object.
+        """
         print_colored_message("\n\t\tChanging Session",Colors.GREEN)
         student = Student.get_student(db_handler)
         for key, values in student.items():
@@ -189,10 +273,20 @@ class Student:
 class Academy:
 
     def start_db_handeling(self):
+        """
+        Initializes database handling for the academy.
+        """
         self.db_handler = DatabaseHandler()
         
     @staticmethod  
     def add_academy(all_academy,db_handler):
+        """
+        Adds a new academy and its courses to the database.
+
+        Args:
+            all_academy (dict): A dictionary containing all academies and their courses.
+            db_handler (DatabaseHandler): A DatabaseHandler object to interact with the database.
+        """
         # all_academy, _ =  db_handler.get_course()
         academy_name = input("Enter Name of Academy: ")
         course_detail = input("Enter Academy details like (Coursename:price,coursename2:price) :")
@@ -208,6 +302,13 @@ class Academy:
 
     @staticmethod
     def remove_academy(all_academy,db_handler):
+        """
+        Removes an academy from the database.
+
+        Args:
+            all_academy (dict): A dictionary containing all academies and their courses.
+            db_handler (DatabaseHandler): A DatabaseHandler object to interact with the database.
+        """
         remove = input("Enter Academy Name: ")
         if remove in all_academy:
             all_academy.pop(remove)
@@ -218,6 +319,12 @@ class Academy:
     
     @staticmethod
     def show_all_course(db_handler):
+        """
+        Displays all courses and their details from the database.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object to interact with the database.
+        """
         os.system("clear")
         _, all_course_list = db_handler.get_course()
         print('''Course Name \t\t\t\t\t\t\t Course Price''')
@@ -231,6 +338,15 @@ class Academy:
 
     @staticmethod
     def get_course(db_handler):
+        """
+        Retrieves all courses from the database.
+
+        Args:
+            db_handler (DatabaseHandler): A DatabaseHandler object to interact with the database.
+
+        Returns:
+            tuple: A tuple containing a dictionary of all courses and their details.
+        """
         return db_handler.get_course()
 
     

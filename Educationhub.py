@@ -39,7 +39,7 @@ def show_student_rows(db_handler):
             Student.change_session(Student,db_handler)
         
         case "8":
-            show_welcome_screen()
+            show_main_menu()
         case _:
             show_student_rows()
 
@@ -60,7 +60,7 @@ def show_university(db_handler):
         case "2":
             Academy.remove_academy(all_academy, db_handler)
         case "3":
-            show_welcome_screen()
+            show_main_menu()
         case _:
             show_university(db_handler)
 
