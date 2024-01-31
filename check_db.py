@@ -62,23 +62,23 @@ class DatabaseHandler:
                                     "Total_cost": total_cost.strip(), "Enrolled_list": enrolled_list, "Paid": paid.strip()}
         return student
 
-    def create_student(self, first_name, last_name, roll_number, paid, enrolled_list=[], total_cost=0):
-        """
-        Creates a new student entry.
+    # def create_student(self, first_name, last_name, roll_number, paid, enrolled_list=[], total_cost=0):
+    #     """
+    #     Creates a new student entry.
 
-        Args:
-            first_name (str): The first name of the student.
-            last_name (str): The last name of the student.
-            roll_number (int): The roll number of the student.
-            paid (float): The amount already paid by the student.
-            enrolled_list (list, optional): List of courses the student is enrolled in. Defaults to an empty list.
-            total_cost (float, optional): The total cost for the student. Defaults to 0.
+    #     Args:
+    #         first_name (str): The first name of the student.
+    #         last_name (str): The last name of the student.
+    #         roll_number (int): The roll number of the student.
+    #         paid (float): The amount already paid by the student.
+    #         enrolled_list (list, optional): List of courses the student is enrolled in. Defaults to an empty list.
+    #         total_cost (float, optional): The total cost for the student. Defaults to 0.
 
-        Returns:
-            dict: A dictionary representing the new student.
-        """
-        student = {roll_number: {"first_name": first_name, "last_name": last_name, "Total_cost": total_cost,"Enrolled_list": enrolled_list, "Paid": paid}}
-        return student
+    #     Returns:
+    #         dict: A dictionary representing the new student.
+    #     """
+    #     student = {roll_number: {"first_name": first_name, "last_name": last_name, "Total_cost": total_cost,"Enrolled_list": enrolled_list, "Paid": paid}}
+    #     return student
 
     def make_row_student(self, student):
         """
