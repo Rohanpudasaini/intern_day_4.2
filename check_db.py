@@ -30,6 +30,7 @@ class DatabaseHandler:
                 for course in courses:
                     course_name, course_price = course.split(":")
                     course_name = course_name.strip()
+                    # course_name = f'{course_name} by {academy}' 
                     if academy not in academy_dict:
                         academy_dict[academy] = {course_name: course_price}
                     else:
@@ -39,6 +40,7 @@ class DatabaseHandler:
                     else:
                         new_course_name = (f"{course_name} - {academy}")
                         all_academy[new_course_name] = course_price
+                    # all_academy[course_name] = course_price
         return academy_dict, all_academy
 
     def get_student(self):

@@ -1,4 +1,5 @@
 import os
+import sys
 from check_db import DatabaseHandler
 from cli_app_class import Student, Academy
 from display_functions import *
@@ -18,27 +19,52 @@ def show_student_rows(db_handler):
     choice = show_student_menu()
     match choice:
         case "1":
-            Student.add_student(student)
+            try:
+                Student.add_student(student)
+            except ValueError:
+                print_colored_message("Wrong Roll number format \U0001F928 ",Colors.RED)
+                input("Continue... ")
+
             show_student_rows(db_handler)
 
         case "2":
-            Student.remove_student(db_handler)
+            try:
+                Student.remove_student(db_handler)
+            except ValueError:
+                print_colored_message("Wrong Roll number format \U0001F928 ",Colors.RED)
+                input("Continue... ")
             show_student_rows(db_handler)
 
         case "3":
-            Student.show_remaining_fee(db_handler)
+            try:
+                Student.show_remaining_fee(db_handler)
+            except ValueError:
+                print_colored_message("Wrong Roll number format \U0001F928 ",Colors.RED)
+                input("Continue... ")
             show_student_rows(db_handler)
 
         case "4":
-            Student.pay_fee(db_handler)
+            try:
+                Student.pay_fee(db_handler)
+            except ValueError:
+                print_colored_message("Wrong Roll number format \U0001F928 ",Colors.RED)
+                input("Continue... ")
             show_student_rows(db_handler)
             
         case "5":
-            Student.join_course(db_handler)
+            try:
+                Student.join_course(db_handler)
+            except ValueError:
+                print_colored_message("Wrong Roll number format \U0001F928 ",Colors.RED)
+                input("Continue... ")
             show_student_rows(db_handler)
 
         case "6":
-            Student.opt_course(db_handler)
+            try:
+                Student.opt_course(db_handler)
+            except ValueError:
+                print_colored_message("Wrong Roll number format \U0001F928	",Colors.RED)
+                input("Continue... ")
             show_student_rows(db_handler)
 
         case "7":
@@ -46,9 +72,11 @@ def show_student_rows(db_handler):
             show_student_rows(db_handler)
         
         case "8":
-            show_main_menu()
+            # show_main_menu()
+            return False
         case _:
-            show_student_rows(db_handler)
+            # show_student_rows(db_handler)
+            return True
 
 def show_university(db_handler):
     os.system("clear")
@@ -79,14 +107,17 @@ def main():
     while True:
         choice = show_main_menu()
         if choice == '1':
-            show_student_rows(db_handler)
+            continue_showing = show_student_rows(db_handler)
+            if not continue_showing:
+                continue
         elif choice == '2':
             show_university(db_handler)
         elif choice == '3':
             Academy.show_all_course(db_handler)
         elif choice == '4':
-            print("Exiting the app...")
-            exit()
+            sys.exit("Exiting the app...")
+            # sys,exit(0)
+
         else:
             print("Invalid choice. Please try again.")
 

@@ -160,7 +160,10 @@ class Student:
         Args:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
-        roll_num_to_remove = int(input("Enter the roll number to remove: "))
+        try:
+            roll_num_to_remove = int(input("Enter the roll number to remove: "))
+        except ValueError:
+            roll_num_to_remove = int(input("Invalid roll number format, please check roll number and enter again: "))
         student = cls.get_student(db_handler)
         if roll_num_to_remove in student:
             student.pop(int(roll_num_to_remove))
@@ -178,13 +181,16 @@ class Student:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
         student = cls.get_student(db_handler)
-        roll_num_to_fee = int(input("Enter the roll number to get remaning fee: "))
+        try:
+            roll_num_to_fee = int(input("Enter the roll number to get remaning fee: "))
+        except ValueError:
+            roll_num_to_fee = int(input("Invalid roll number format, please check roll number and enter again: "))
         if roll_num_to_fee in student:
             fee = cls.get_remaining_payment(Student,roll_num_to_fee)
             if fee < 0:
-                fee = str(fee *-1) + " Overpaid"
+                fee = str(fee *-1) + " Overpaid, please check accounts for refund or enroll to any other course."
             else:
-                fee = str(fee) + " Remaning"
+                fee = str(fee) + " Remaning, please pay the fee at time"
             print(fee)
         else:
             print_colored_message(f"No student with roll number {roll_num_to_fee}",Colors.RED)
@@ -199,7 +205,10 @@ class Student:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
         student = cls.get_student(db_handler)
-        roll_num_to_pay = int(input("Enter the roll number to get pay fee: "))
+        try:
+            roll_num_to_pay = int(input("Enter the roll number to get pay fee: "))
+        except ValueError:
+            roll_num_to_pay = int(input("Invalid roll number format, please check roll number and enter again: "))
         if roll_num_to_pay in student:
             remaining_fee = 'remaning'
             cash_status = "paying"
@@ -233,7 +242,10 @@ class Student:
         Args:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
-        roll_number_to_join = int(input("Enter the roll number to get Join a course: "))
+        try:
+            roll_number_to_join = int(input("Enter the roll number to get Join a course: "))
+        except ValueError:
+            roll_number_to_join = int(input("Invalid roll number format, please check roll number and enter again: "))
         Academy.show_all_course(db_handler)
         _, all_course_list = Academy.get_course(db_handler)
         course_name_to_add = input("Enter the name of the course you want to add:  ").strip()
@@ -258,7 +270,10 @@ class Student:
         Args:
             db_handler (DatabaseHandler): A DatabaseHandler object.
         """
-        roll_number_to_opt = int(input("Enter the roll number to get Opt from a course: "))
+        try:
+            roll_number_to_opt = int(input("Enter the roll number to get Opt from a course: "))
+        except ValueError:
+            roll_number_to_opt = int(input("Invalid roll number format, please check roll number and enter again: "))
         # show_all_course()
         student = cls.get_student(db_handler)
         course_name_to_remove = input("Enter the name of the course you want to remove:  ")
